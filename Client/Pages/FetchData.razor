@@ -25,6 +25,7 @@ else
                 <th>Price</th>
                 <th>Fuel Type</th>
                 <th>Features</th>
+                <th>Image</th>
             </tr>
         </thead>
         <tbody>
@@ -35,8 +36,13 @@ else
                     <td>@car.Model</td>
                     <td>@car.Year</td>
                     <td>@car.Color</td>
+                    <td>@car.Mileage</td>
+                    <td>@($"{car.Price}$")</td>
                     <td>@car.FuelType</td>
                     <td>@string.Join(", ", car.Features)</td>
+                    <td>
+                        <img src="@($"/img/{car.Make} {car.Model} {car.Year}.jpg")" style="height:75px; width:150px;text-align:center;">
+                    </td>
                 </tr>
             }
         </tbody>
