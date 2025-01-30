@@ -1,0 +1,45 @@
+﻿@page "/cars"
+@inject HttpClient Http
+
+<PageTitle>CarAuctions - Available Cars</PageTitle>
+
+<MudContainer Class="mt-16">
+    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Car Listings</MudText>
+    <MudGrid Class="mt-8 mb-8">
+        @if (cars == null)
+        {
+            <MudText Align="Align.Center"><em>Loading...</em></MudText>
+        }
+        else
+        {
+            @foreach (var car in cars)
+            {
+                <MudItem xs="12" sm="6" md="4">
+                    <MudCard Elevation="25" Class="rounded-lg pb-4" Style="@($"background-image: url('img/{car.Make} {car.Model} {car.Year}.jpg'); background-size: cover; background-position: center;")">
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.h5" Align="Align.Center" Class="text-white">@car.Make @car.Model (@car.Year)</MudText>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent Style="background-color: rgba(255, 255, 255, 0.8);">
+                            <MudText Typo="Typo.body1" Align="Align.Center">Color: @car.Color</MudText>
+                            <MudText Typo="Typo.body1" Align="Align.Center">Mileage: @car.Mileage km</MudText>
+                            <MudText Typo="Typo.body1" Align="Align.Center">Price: @car.Price.ToString("C")</MudText>
+                            <MudText Typo="Typo.body1" Align="Align.Center">Fuel Type: @car.FuelType</MudText>
+                            <MudText Typo="Typo.body1" Align="Align.Center">Features: @string.Join(", ", car.Features)</MudText>
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+            }
+        }
+    </MudGrid>
+</MudContainer>
+
+@code {
+    private Car[]? cars;
+
+    protected override async Task OnInitializedAsync()
+    {
+        cars = await Http.GetFromJsonAsync<Car[]>("https://www.freetestapi.com/api/v1/cars");
+    }
+}
