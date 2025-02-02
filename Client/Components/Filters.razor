@@ -1,0 +1,89 @@
+﻿<MudGrid Justify="Justify.SpaceAround">
+    <MudItem>
+        <MudIcon Icon="fa fa-filter" />
+    </MudItem>
+    <MudItem>
+        <MudSelect @ref="makesMudSelect" T="string" Label="Makes" MultiSelection SelectedValuesChanged="FilterMakes" ClearIcon="@Icons.Material.Filled.CancelPresentation">
+            @foreach (var make in makes)
+            {
+                <MudSelectItem T="string" Value="@make">@make</MudSelectItem>
+            }
+        </MudSelect>
+    </MudItem>
+    <MudItem>
+        <MudSelect @ref="modelsMudSelect" Disabled="@(!selectedMakes.Any())" T="string" Label="Makes" MultiSelection SelectedValuesChanged="FilterModels" ClearIcon="@Icons.Material.Filled.CancelPresentation">
+            @foreach (var model in GetModels())
+            {
+                <MudSelectItem T="string" Value="@model">@model</MudSelectItem>
+            }
+        </MudSelect>
+    </MudItem>
+    <MudItem>
+        <MudButton OnClick="Clear" Color="Color.Primary">Wyczyść filtry</MudButton>
+    </MudItem>
+</MudGrid>
+
+@code {
+    [Parameter] 
+    public EventCallback<IEnumerable<Car>> OnCarsChanged { get; set; }
+
+    [Parameter] 
+    public IEnumerable<Car>? Cars { get; set; }
+
+    MudSelect<string>? makesMudSelect;
+    MudSelect<string>? modelsMudSelect;
+
+    private IEnumerable<Car> allCars = [];
+
+    private IEnumerable<string> makes = [];
+    private IEnumerable<string> models = [];
+
+    private IEnumerable<string> selectedMakes = [];
+    private IEnumerable<string> selectedModels = [];
+
+    protected override void OnInitialized()
+    {
+        makes = Cars?.Select(x => x.Make).Distinct() ?? [];
+        models = Cars?.Select(x => x.Model).Distinct() ?? [];
+
+        allCars = Cars ?? [];
+    }
+
+    private IEnumerable<string> GetModels()
+    {
+        if (!selectedMakes.Any())
+            return models;
+        return allCars.Where(x => selectedMakes.Contains(x.Make)).Select(x => x.Model).Distinct();
+    }
+
+    private void FilterMakes(IEnumerable<string> selectedMakes)
+    {
+        this.selectedMakes = selectedMakes;
+        Filter();
+    }
+
+    private void FilterModels(IEnumerable<string> selectedModels)
+    {
+        this.selectedModels = selectedModels;
+        Filter();
+    }
+
+    private void Filter()
+    {
+        var cars = allCars.Where(x => selectedMakes.Contains(x.Make));
+        var b = cars.ToArray();
+
+        if (selectedModels.Any())
+            cars = cars.Where(x => selectedModels.Contains(x.Model));
+
+        OnCarsChanged.InvokeAsync(cars);
+    }
+
+    private void Clear()
+    {
+        makesMudSelect?.Clear();
+        modelsMudSelect?.Clear();
+        
+        OnCarsChanged.InvokeAsync(allCars);
+    }
+}

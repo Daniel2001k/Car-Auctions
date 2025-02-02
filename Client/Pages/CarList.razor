@@ -12,6 +12,9 @@
         }
         else
         {
+            <MudItem xs="12">
+                <Filters OnCarsChanged="RefreshCarsList" Cars="cars" />
+            </MudItem>
             @foreach (var car in cars)
             {
                 <MudItem xs="12" sm="6" md="4">
@@ -36,10 +39,15 @@
 </MudContainer>
 
 @code {
-    private Car[]? cars;
+    private IEnumerable<Car>? cars;
 
     protected override async Task OnInitializedAsync()
     {
-        cars = await Http.GetFromJsonAsync<Car[]>("https://www.freetestapi.com/api/v1/cars");
+        cars = await Http.GetFromJsonAsync<IEnumerable<Car>>("https://www.freetestapi.com/api/v1/cars");
+    }
+
+    protected void RefreshCarsList(IEnumerable<Car> cars)
+    {
+        this.cars = cars;
     }
 }
