@@ -28,10 +28,10 @@
     public EventCallback<IEnumerable<Car>> OnCarsChanged { get; set; }
 
     [Parameter] 
-    public IEnumerable<Car>? Cars { get; set; }
+    public IEnumerable<Car> Cars { get; set; }
 
-    MudSelect<string>? makesMudSelect;
-    MudSelect<string>? modelsMudSelect;
+    MudSelect<string> makesMudSelect;
+    MudSelect<string> modelsMudSelect;
 
     private IEnumerable<Car> allCars = [];
 

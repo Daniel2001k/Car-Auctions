@@ -1,5 +1,6 @@
 ﻿@page "/cars"
-@inject HttpClient Http
+
+@inject IHttpService Http
 
 <PageTitle>CarAuctions - Available Cars</PageTitle>
 
@@ -39,11 +40,11 @@
 </MudContainer>
 
 @code {
-    private IEnumerable<Car>? cars;
+    private IEnumerable<Car> cars;
 
     protected override async Task OnInitializedAsync()
     {
-        cars = await Http.GetFromJsonAsync<IEnumerable<Car>>("https://www.freetestapi.com/api/v1/cars");
+        cars = await Http.Get<IEnumerable<Car>>("https://www.freetestapi.com/api/v1/cars");
     }
 
     protected void RefreshCarsList(IEnumerable<Car> cars)

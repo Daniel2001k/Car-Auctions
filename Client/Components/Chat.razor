@@ -1,60 +1,39 @@
+@using CarAuctions.Shared.Models
+@using CarAuctions.Shared
+
+@inject IHttpService Http
+@inject ISnackbar SnackBar
+
 @if (isActive)
 {
     <MudCard Elevation="10" Class="fixed-div">
         <div class="chat-area">
             <MudIconButton OnClick="@(() => isActive = false)" Color="Color.Primary" Icon="@Icons.Material.Filled.Cancel" Class="absolute-btn" />
-            <MudChat ChatPosition="ChatBubblePosition.Start" Color="Color.Tertiary">
-                <MudAvatar Color="Color.Tertiary">OK</MudAvatar>
-                <MudChatBubble>
-                    It was said that you would, destroy the Sith, not join them.
-                </MudChatBubble>
-                <MudChatBubble>
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                    It was you who would bring balance to the Force
-                </MudChatBubble>
-            </MudChat>
-
-            <MudChat ChatPosition="ChatBubblePosition.End" Color="Color.Primary">
-                <MudAvatar Color="Color.Primary">
-                    <MudImage Src="images/jonny.jpg" />
-                </MudAvatar>
-                <MudChatBubble>
-                </MudChatBubble>
-            </MudChat>
+            @foreach (var message in ChatHandler.Messages)
+            {
+                @if (message.User.Equals(user))
+                {
+                    <MudChat ChatPosition="ChatBubblePosition.End" Color="Color.Primary">
+                        <MudAvatar Color="Color.Primary">@message.User</MudAvatar>
+                        <MudChatBubble>
+                            @message.Message
+                        </MudChatBubble>
+                    </MudChat>
+                }
+                else
+                {
+                    <MudChat ChatPosition="ChatBubblePosition.Start" Color="Color.Tertiary">
+                        <MudAvatar Color="Color.Tertiary">@message.User</MudAvatar>
+                        <MudChatBubble>
+                            @message.Message
+                        </MudChatBubble>
+                    </MudChat>
+                }
+            }
         </div>
         <div class="text-area">
             <MudTextField T="string" Variant="Variant.Text" @bind-Value="message" Placeholder="Napisz coœ!" Lines="2" Typo="Typo.body2" Clearable />
-            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Send" Color="Color.Primary">Wyœlij</MudButton>
+            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Send" Color="Color.Primary" OnClick="SendMessage">Wyœlij</MudButton>
         </div>
     </MudCard>
 }
@@ -69,4 +48,45 @@ else
 @code {
     private bool isActive;
     private string message = string.Empty;
+    private string user = string.Empty;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Random random = new Random();
+        user = random.Next(10, 100).ToString();
+        ChatHandler.OnChange += NotifyStateHasChanged;
+        await ChatHandler.SubscribeChat();
+    }
+
+    public async Task SendMessage()
+    {
+        try
+        {
+            var chatMessage = new ChatMessage(user, message);
+
+            await Http.Post($"api/{Routes.ChatMessage}/SendMessage/", chatMessage);
+            message = string.Empty;
+
+            SnackBar.Add($"Wys³ano wiadomoœæ", Severity.Success);
+        }
+        catch (Exception ex)
+        {
+            SnackBar.Add($"Nie wys³ano wiadomoœci", Severity.Error);
+            Console.WriteLine(ex);
+        }
+    }
+
+    public void Dispose()
+    {
+        ChatHandler.OnChange -= NotifyStateHasChanged;
+    }
+
+    public async void NotifyStateHasChanged()
+    {
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
 }

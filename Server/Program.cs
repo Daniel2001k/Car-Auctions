@@ -1,4 +1,5 @@
-using Microsoft.AspNetCore.ResponseCompression;
+using CarAuctions.Server.SignalRHubs;
+using CarAuctions.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddSignalR().AddHubOptions<BroadcastHub>(options =>
+{
+    options.EnableDetailedErrors = true;
+});
+builder.Services.AddTransient<BroadcastHub>();
 
 var app = builder.Build();
 
@@ -32,5 +39,7 @@ app.UseRouting();
 app.MapRazorPages();
 app.MapControllers();
 app.MapFallbackToFile("index.html");
+
+app.MapHub<BroadcastHub>(ChatHubRoutes.SignalRUrl);
 
 app.Run();
