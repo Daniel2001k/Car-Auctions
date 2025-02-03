@@ -1,4 +1,6 @@
-<MudCard Elevation="25" Class="rounded-lg pb-4" Style="@($"background-image: url('img/{Car.Make} {Car.Model} {Car.Year}.jpg'); background-size: cover; background-position: center;")">
+@inject ISnackbar SnackBar
+
+<MudCard @onclick="OpenDialogAsync" Elevation="25" Class="rounded-lg pb-4" Style="@($"background-image: url('img/{Car.Make} {Car.Model} {Car.Year}.jpg'); background-size: cover; background-position: center; cursor: pointer;")">
     <MudCardHeader>
         <CardHeaderContent>
             <MudText Typo="Typo.h5" Align="Align.Center" Class="text-white">@Car.Make @Car.Model (@Car.Year)</MudText>
@@ -16,4 +18,31 @@
 @code {
     [Parameter]
     public Car Car { get; set; }
+
+    private async Task OpenDialogAsync()
+    {
+        var parameters = new DialogParameters<CarDialog>
+        {
+            { x => x.Car, Car }
+        };
+
+        var options = new DialogOptions() 
+        { 
+            CloseButton = true, 
+            MaxWidth = MaxWidth.ExtraLarge 
+        };
+
+        var dialog = await DialogService.ShowAsync<CarDialog>("Formularz kontaktowy", parameters, options);
+        var result = await dialog.Result;
+
+
+        if (!result.Canceled)
+        {
+            SnackBar.Add("Formularz wys³any pomyœlnie!", Severity.Success);
+        }
+        else
+        {
+            SnackBar.Add("Nie wys³ano formularza", Severity.Warning);
+        }
+    }
 }
