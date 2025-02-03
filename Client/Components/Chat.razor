@@ -16,7 +16,7 @@
                     <MudChat ChatPosition="ChatBubblePosition.End" Color="Color.Primary">
                         <MudAvatar Color="Color.Primary">@message.User</MudAvatar>
                         <MudChatBubble>
-                            @message.Message
+                            <MudTextField T="string" Variant="Variant.Text" Text="@message.Message" AutoGrow Typo="Typo.body2" Disabled Style="width: 300px" />
                         </MudChatBubble>
                     </MudChat>
                 }
@@ -25,7 +25,7 @@
                     <MudChat ChatPosition="ChatBubblePosition.Start" Color="Color.Tertiary">
                         <MudAvatar Color="Color.Tertiary">@message.User</MudAvatar>
                         <MudChatBubble>
-                            @message.Message
+                            <MudTextField T="string" Variant="Variant.Text" Text="@message.Message" AutoGrow Typo="Typo.body2" Disabled Style="width: 300px" />
                         </MudChatBubble>
                     </MudChat>
                 }

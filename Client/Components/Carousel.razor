@@ -1,0 +1,21 @@
+@if (Cars != null)
+{
+    <MudCarousel Class="mud-width-full" Style="height:200px;" ShowArrows ShowBullets="false" EnableSwipeGesture AutoCycle TData="object" @bind-SelectedIndex="StartCar">
+        @foreach (var car in Cars)
+        {
+            <MudCarouselItem Transition="Transition.Slide">
+                <div class="d-flex justify-center" style="height:100%">
+                    <CarCard Car="car" />
+                </div>
+            </MudCarouselItem>
+        }
+    </MudCarousel>
+}
+
+@code {
+    [Parameter]
+    public IEnumerable<Car> Cars { get; set; }
+
+    [Parameter]
+    public int StartCar { get; set; }
+}

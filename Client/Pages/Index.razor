@@ -1,6 +1,74 @@
 ﻿@page "/"
 
+@inject IHttpService Http
+
+@using System.Globalization;
+
 <PageTitle>CarAuctions - Hello!</PageTitle>
 
+<MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
+    <MudGrid>
+        <MudItem xs="12" sm="12" md="12" Class="pa-16">
+            <MudText Typo="Typo.h6" Align="Align.Center">
+                Zapraszamy do zapoznania się z naszą wyjątkową ofertą samochodów! 
+                W naszej karuzeli znajdziesz szeroki wybór pojazdów, od ekonomicznych kompaktów po luksusowe limuzyny. 
+                Każdy samochód jest dokładnie sprawdzony i gotowy do jazdy. Przeglądaj naszą kolekcję i znajdź idealny pojazd dla siebie!
+            </MudText>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <Carousel Cars="cars" StartCar="0" />
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <Carousel Cars="cars" StartCar="3" />
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <Carousel Cars="cars" StartCar="6" />
+        </MudItem>
+        <MudItem xs="12" sm="12" md="12" Class="pa-16">
+            <MudText Typo="Typo.h6" Align="Align.Center">
+                Poznaj naszą perełkę – najdroższy samochód w naszej ofercie! 
+                Ten ekskluzywny model to prawdziwe dzieło sztuki motoryzacyjnej, 
+                łączące w sobie najwyższą jakość wykonania, nowoczesne technologie i niezrównany komfort. 
+                Nie przegap okazji, aby stać się właścicielem tego wyjątkowego pojazdu.
+            </MudText>
+        </MudItem>
+        <MudItem xs="12" sm="6" Class="flex justify-center align-content-center">
+            <MudGrid>
+                <MudItem xs="12" class="pa-16">
+                    <div style="height: 200px;">
+                        <MudText Typo="Typo.h2">Najdroższy samochód!</MudText>
+                        <MudText Typo="Typo.h3">Marka: @MostExpensiveCar.Make (@MostExpensiveCar.Year)</MudText>
+                        <MudText Typo="Typo.h3">Model: @MostExpensiveCar.Model</MudText>
+                        <MudText Typo="Typo.h4">Cena: @MostExpensiveCar.Price.ToString()$</MudText>
+                    </div>
+                </MudItem>
+                <MudItem xs="12" class="pa-16">
+                    <div style="height: 200px;">
+                        <MudText Typo="Typo.h6">
+                            Kolor samochodu to @MostExpensiveCar.Color, ma przejechane @MostExpensiveCar.Mileage km <br />
+                            oraz jeździ na paliwie typu @MostExpensiveCar.FuelType i posiada: @string.Join(", ", MostExpensiveCar.Features). <br />
+                            Jego cena to <bold>@MostExpensiveCar.Price.ToString()$!</bold>
+                        </MudText>
+                    </div>
+                </MudItem>
+            </MudGrid>
+        </MudItem>
+        <MudItem xs="12" sm="6">
+            <div style="height: 100%" class="pa-16">
+                <MudImage Src="@($"img/{MostExpensiveCar.Make} {MostExpensiveCar.Model} {MostExpensiveCar.Year}.jpg")" Style="width: 100%" />
+            </div>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
 
-<Chat/>
+@code {
+    private IEnumerable<Car> cars;
+    private Car MostExpensiveCar = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        cars = await Http.Get<IEnumerable<Car>>("https://www.freetestapi.com/api/v1/cars");
+        MostExpensiveCar = cars.OrderByDescending(x => x.Price).FirstOrDefault();
+    }
+}
+
