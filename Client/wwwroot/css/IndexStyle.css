@@ -1,0 +1,29 @@
+﻿.fixed-div {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 35vw;
+    max-height: 50vh;
+}
+
+.fixed-mudfab {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+}
+
+.absolute-btn {
+    position: absolute !important;
+    top: 5px;
+    right: 5px;
+}
+
+.chat-area {
+    overflow: scroll;
+}
+
+.text-area {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+}

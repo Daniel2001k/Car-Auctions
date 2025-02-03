@@ -1,0 +1,72 @@
+@if (isActive)
+{
+    <MudCard Elevation="10" Class="fixed-div">
+        <div class="chat-area">
+            <MudIconButton OnClick="@(() => isActive = false)" Color="Color.Primary" Icon="@Icons.Material.Filled.Cancel" Class="absolute-btn" />
+            <MudChat ChatPosition="ChatBubblePosition.Start" Color="Color.Tertiary">
+                <MudAvatar Color="Color.Tertiary">OK</MudAvatar>
+                <MudChatBubble>
+                    It was said that you would, destroy the Sith, not join them.
+                </MudChatBubble>
+                <MudChatBubble>
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                    It was you who would bring balance to the Force
+                </MudChatBubble>
+            </MudChat>
+
+            <MudChat ChatPosition="ChatBubblePosition.End" Color="Color.Primary">
+                <MudAvatar Color="Color.Primary">
+                    <MudImage Src="images/jonny.jpg" />
+                </MudAvatar>
+                <MudChatBubble>
+                </MudChatBubble>
+            </MudChat>
+        </div>
+        <div class="text-area">
+            <MudTextField T="string" Variant="Variant.Text" @bind-Value="message" Placeholder="Napisz coœ!" Lines="2" Typo="Typo.body2" Clearable />
+            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Send" Color="Color.Primary">Wyœlij</MudButton>
+        </div>
+    </MudCard>
+}
+else
+{
+    <div class="fixed-mudfab">
+        <MudFab OnClick="@(() => isActive = true)" Color="Color.Primary" StartIcon="@Icons.Material.Filled.ChatBubble" />
+    </div>
+}
+
+
+@code {
+    private bool isActive;
+    private string message = string.Empty;
+}
