@@ -2,5 +2,6 @@
 
 public class Routes
 {
-    public const string ChatMessage = "chatMessage";
+    public const string ChatMessageApi = "chatMessage";
+    public const string CarApi = "car";
 }

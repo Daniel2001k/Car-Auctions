@@ -65,7 +65,7 @@ else
         {
             var chatMessage = new ChatMessage(user, message);
 
-            await Http.Post($"api/{Routes.ChatMessage}/SendMessage/", chatMessage);
+            await Http.Post($"api/{Routes.ChatMessageApi}/SendMessage/", chatMessage);
             message = string.Empty;
 
             SnackBar.Add($"Wys³ano wiadomoœæ", Severity.Success);

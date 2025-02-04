@@ -10,7 +10,7 @@ namespace CarAuctions.Server.Controllers;
 
 [ApiController]
 [AllowAnonymous]
-[Route($"api/{Routes.ChatMessage}/[action]")]
+[Route($"api/{Routes.ChatMessageApi}/[action]")]
 public class ChatMessageController(ILogger<ChatMessageController> logger, IHubContext<BroadcastHub> signalR) : ControllerBase
 {
     private readonly ILogger<ChatMessageController> _logger = logger;

@@ -1,5 +1,5 @@
-@using System.Text.RegularExpressions
-@using System.ComponentModel.DataAnnotations
+@    using System.Text.RegularExpressions
+@    using System.ComponentModel.DataAnnotations
 
 <MudDialog Style="width: 800px; height: 750px;">
     <DialogContent>
@@ -61,17 +61,7 @@
     string[] errors = { };
     MudTextField<string> pwField;
     MudForm form;
-    string agreement = @"<bold>Zgoda na Przetwarzanie Danych Osobowych</bold><br />
-                         Wyra¿am zgodê na przetwarzanie moich danych osobowych<br /> 
-                         przez Car Auctions w celu realizacji procesu zakupu <br />
-                         i sprzeda¿y pojazdów. Obejmuje to, ale nie ogranicza <br />
-                         siê do, kontaktowania siê ze mn¹ w sprawie moich zapytañ, <br />
-                         przetwarzania transakcji oraz œwiadczenia us³ug posprzeda¿owych. <br />
-                         Rozumiem, ¿e moje dane osobowe bêd¹ przetwarzane zgodnie <br />
-                         z obowi¹zuj¹cymi przepisami o ochronie danych osobowych <br />
-                         oraz polityk¹ prywatnoœci firmy. Jestem œwiadomy/a, ¿e mam prawo <br />
-                         do wycofania zgody w dowolnym momencie, kontaktuj¹c <br />
-                         siê z Car Auctions pod danym adresem.";
+    string agreement = "Zgoda na Przetwarzanie Danych Osobowych";
 
     private IEnumerable<string> PasswordStrength(string pw)
     {

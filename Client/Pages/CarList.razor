@@ -31,7 +31,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        cars = await Http.Get<IEnumerable<Car>>("https://www.freetestapi.com/api/v1/cars");
+        cars = await Http.Get<IEnumerable<Car>>($"api/{Routes.CarApi}/Get");
     }
 
     protected void RefreshCarsList(IEnumerable<Car> cars)
